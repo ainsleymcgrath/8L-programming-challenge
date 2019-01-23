@@ -5,4 +5,4 @@ import App from "./components/App";
 import "./styles.scss";
 const root = document.querySelector("#root");
 
-ReactDOM.render(<App hey="ayyy" />, root);
+ReactDOM.render(<App />, root);
