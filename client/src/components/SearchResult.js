@@ -1,5 +1,11 @@
 import React from "react";
-import { makeAuthorsPresentable } from "../helpers";
+import {
+  makeAuthorsPresentable,
+  makePublisherPresentable,
+  clipLongDescriptionText,
+} from "../helpers";
+
+const MAX_WORD_COUNT = 45;
 
 export default function SearchResult(props) {
   return (
@@ -16,11 +22,16 @@ export default function SearchResult(props) {
             <h3 className="is-size-4">{props.data.title}</h3>
             <p className="content">
               {makeAuthorsPresentable(props.data.authors)}
-              <span className="help">Published by {props.data.publisher}</span>
+              <span className="help">
+                {makePublisherPresentable(props.data.publisher)}
+              </span>
             </p>
             <p className="content">
               {props.data.description
-                ? props.data.description
+                ? clipLongDescriptionText(
+                    MAX_WORD_COUNT,
+                    props.data.description,
+                  )
                 : "No Description included."}
             </p>
             <a className="is-link" href={props.data.infoLink} target="_blank" a>
