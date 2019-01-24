@@ -1,0 +1,12 @@
+@import url("https://fonts.googleapis.com/css?family=Aleo:400,700");
+
+$family-primary: "Aleo";
+$break-width: 700px;
+
+#top-container {
+  @media screen and (min-width: $break-width) {
+    width: $break-width;
+  }
+}
+
+@import "../../node_modules/bulma/bulma.sass";

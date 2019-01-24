@@ -48,25 +48,25 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <div id="app" className="columns is-multiline is-mobile content">
+      <div className="columns is-multiline is-mobile">
         <article className="column is-full">
           8th Light Books App by Ainsley
         </article>
-        <div className="column is-full box">
+        <div className="column is-full ">
           <SearchBar
             onChange={this.handleChange}
             onSearch={this.handleSearch}
             value={this.state.searchQuery}
           />
-          {this.state.searchResultsAreLoading && <p className="content">...</p>}
-          {this.state.searchResults.length > 0 &&
-            !this.state.searchResultsAreLoading && (
-              <SearchResultList
-                resultList={this.state.searchResults}
-                onClick={this.handleClickToSearch}
-              />
-            )}
         </div>
+        {this.state.searchResultsAreLoading && <p className="content">...</p>}
+        {this.state.searchResults.length > 0 &&
+          !this.state.searchResultsAreLoading && (
+            <SearchResultList
+              resultList={this.state.searchResults}
+              onClick={this.handleClickToSearch}
+            />
+          )}
       </div>
     );
   }

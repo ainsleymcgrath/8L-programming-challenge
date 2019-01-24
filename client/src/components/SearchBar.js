@@ -23,8 +23,7 @@ export default function SearchBar(props) {
           id="search-button"
           value="ok"
           title="Click here to perform your search"
-          onClick={props.onSearch}
-        >
+          onClick={props.onSearch}>
           Search
         </button>
       </span>
