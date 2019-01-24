@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest --watchAll",
     "start-server": "nodemon server.js",
-    "start-client": "parcel watch client/index.html"
+    "start-client": "parcel watch client/index.html",
+    "postinstall": "parcel build client/index.html"
   },
   "author": "Ainsley McGrath",
   "license": "ISC",
