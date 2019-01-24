@@ -5,8 +5,8 @@ export default function SearchResultList(props) {
   return (
     <div>
       <hr />
-      {props.resultData.resultList.map(result => (
-        <SearchResult data={result} key={result.title} />
+      {props.resultList.map(result => (
+        <SearchResult data={result} key={result.id} />
       ))}
     </div>
   );

@@ -5,7 +5,11 @@ import SearchResultList from "./SearchResultList";
 export default class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { searchQuery: "", searchResults: {} };
+    this.state = {
+      searchQuery: "",
+      searchResults: [],
+      searchResultsAreLoading: false,
+    };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
@@ -23,12 +27,22 @@ export default class App extends React.Component {
     e.preventDefault();
 
     if (e.type === "click" || (e.type === "keyup" && e.keyCode === 13)) {
-      fetch(`${window.location.href}search?q=${this.state.searchQuery}`, {
+      this.setState({ searchResultsAreLoading: true });
+
+      const url = `${window.location.href}search?q=${this.state.searchQuery}`;
+      const options = {
         method: "GET",
-        headers: { "Content-Type": "application/json; charset=utf-8" }
-      })
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+      };
+
+      fetch(url, options)
         .then(res => res.json())
-        .then(json => this.setState({ searchResults: json }));
+        .then(({ resultList }) =>
+          this.setState({
+            searchResults: resultList,
+            searchResultsAreLoading: false,
+          }),
+        );
     }
   }
 
@@ -44,12 +58,14 @@ export default class App extends React.Component {
             onSearch={this.handleSearch}
             value={this.state.searchQuery}
           />
-          {"resultList" in this.state.searchResults && (
-            <SearchResultList
-              resultData={this.state.searchResults}
-              onClick={this.handleClickToSearch}
-            />
-          )}
+          {this.state.searchResultsAreLoading && <p className="content">...</p>}
+          {this.state.searchResults.length > 0 &&
+            !this.state.searchResultsAreLoading && (
+              <SearchResultList
+                resultList={this.state.searchResults}
+                onClick={this.handleClickToSearch}
+              />
+            )}
         </div>
       </div>
     );

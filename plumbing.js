@@ -1,23 +1,25 @@
 module.exports = function parseRawApiResponse(rawJson) {
   return rawJson.items
-    .map(({ volumeInfo }) => ({ ...volumeInfo }))
+    .map(({ volumeInfo, id }) => ({ ...volumeInfo, ...id }))
     .map(
       ({
+        id,
         authors,
         title,
         publisher,
         publishDate,
         description,
         imageLinks,
-        infoLink
+        infoLink,
       }) => ({
+        id,
         authors,
         title,
         publisher,
         publishDate,
         description,
         imageLinks,
-        infoLink
-      })
+        infoLink,
+      }),
     );
 };
