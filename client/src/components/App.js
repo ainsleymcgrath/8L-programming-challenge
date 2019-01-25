@@ -2,13 +2,18 @@ import React from "react";
 import SearchBar from "./SearchBar";
 import SearchResultList from "./SearchResultList";
 
+/** takes no props.
+ * top level of this application, handles all IO and state management.
+ * the only class component
+ * */
 export default class App extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       searchQuery: "",
       searchResults: [],
       searchResultsAreLoading: false,
+      noBooks: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -41,6 +46,7 @@ export default class App extends React.Component {
           this.setState({
             searchResults: resultList,
             searchResultsAreLoading: false,
+            noBooks: resultList.length === 0,
           }),
         );
     }
@@ -49,9 +55,7 @@ export default class App extends React.Component {
   render() {
     return (
       <div className="columns is-multiline is-mobile">
-        <article className="column is-full">
-          8th Light Books App by Ainsley
-        </article>
+        <title className="column is-full">8th Light Books App by Ainsley</title>
         <div className="column is-full ">
           <SearchBar
             onChange={this.handleChange}
@@ -59,14 +63,17 @@ export default class App extends React.Component {
             value={this.state.searchQuery}
           />
         </div>
-        {this.state.searchResultsAreLoading && <p className="content">...</p>}
-        {this.state.searchResults.length > 0 &&
-          !this.state.searchResultsAreLoading && (
-            <SearchResultList
-              resultList={this.state.searchResults}
-              onClick={this.handleClickToSearch}
-            />
-          )}
+        {this.state.searchResultsAreLoading && (
+          <div className="container">
+            <p className="content is-size-1">...</p>
+          </div>
+        )}
+        {!this.state.searchResultsAreLoading && (
+          <SearchResultList
+            resultList={this.state.searchResults}
+            noBooks={this.state.noBooks}
+          />
+        )}
       </div>
     );
   }

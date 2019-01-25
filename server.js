@@ -5,7 +5,7 @@ const app = express();
 const path = require("path");
 const fetch = require("node-fetch");
 
-const parseRawApiResponse = require("./plumbing");
+const parseBooksApiResponse = require("./plumbing");
 
 // static
 app.use(express.static("dist"));
@@ -28,7 +28,7 @@ app.get("/search", (req, res) => {
     .then(res =>
       res.ok ? res.json() : new Error("Books API did not return 200"),
     )
-    .then(json => parseRawApiResponse(json))
+    .then(json => parseBooksApiResponse(json))
     .then(data => {
       res.send({ resultList: data });
     });

@@ -1,29 +1,45 @@
 import React from "react";
 import {
-  makeAuthorsPresentable,
+  makeEnglishLanguageList,
   makePublisherPresentable,
   clipLongDescriptionText,
 } from "../helpers";
 
 const MAX_WORD_COUNT = 45;
 
+/** expects props:
+ * - data: see `plumbing` in top level dir for expected object
+ *
+ *   stateless componenet. must be implemented by a controller.
+ **/
 export default function SearchResult(props) {
   return (
     <div className="column is-full container">
       <br />
-      <article class="media">
+      <article className="media">
         <figure className="media-left">
           <p className="image">
-            <img src={props.data.imageLinks.smallThumbnail} alt="" />
+            {props.data.imageLinks ? (
+              <img
+                src={props.data.imageLinks.smallThumbnail}
+                alt={`${props.data.title} cover image.`}
+              />
+            ) : (
+              <div className="container">No image found</div>
+            )}
           </p>
         </figure>
-        <div class="media-content">
-          <div class="content">
+        <div className="media-content">
+          <div className="content">
             <h3 className="is-size-4">{props.data.title}</h3>
             <p className="content">
-              {makeAuthorsPresentable(props.data.authors)}
+              {props.data.authors
+                ? makeEnglishLanguageList(props.data.authors)
+                : "No author listed"}
               <span className="help">
-                {makePublisherPresentable(props.data.publisher)}
+                {props.data.publisher
+                  ? makePublisherPresentable(props.data.publisher)
+                  : "No publication info provided"}
               </span>
             </p>
             <p className="content">

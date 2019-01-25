@@ -1,5 +1,12 @@
 import React from "react";
 
+/** expects props: (see App.js)
+ * value: controlled; generated in controller hook
+ * onChange: callback to controller
+ * onSearch: callback to controller
+ *
+ * stateless componenet. must be implemented by a controller.
+ **/
 export default function SearchBar(props) {
   return (
     <div className="field has-addons">

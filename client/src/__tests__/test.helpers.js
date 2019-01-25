@@ -1,23 +1,24 @@
-// Attempted various imports to no avail
-//
-// import React from "react";
-// import {
-//   makeAuthorsPresentable,
-//   makePublisherPresentable,
-//   clipLongDescriptionText,
-// } from "../helpers";
+function makeEnglishLanguageList(arr) {
+  if (arr.length === 1) {
+    return `By ${arr.pop()}`;
+  }
 
-// const helpers = require("../helpers");
+  const last = arr.pop();
+  return `By ${arr.join(", ")}${arr.length >= 2 ? "," : ""} and ${last}`;
+}
 
-test("undefined publisher is not available", () => {
-  expect(makePublisherPresentable(undefined)).toEqual(
-    "Publication info unavailable",
-  );
-});
+function makePublisherPresentable(publisher) {
+  return `Published by ${publisher}`;
+}
 
-test("blank publisher is not available", () => {
-  expect(makePublisherPresentable("")).toEqual("Publication info unavailable");
-});
+function clipLongDescriptionText(wordCount, descriptionText) {
+  return descriptionText.split(" ").length > wordCount
+    ? descriptionText
+        .split(" ")
+        .slice(0, wordCount)
+        .join(" ") + "..."
+    : descriptionText;
+}
 
 test("info is presented when it exists", () => {
   expect(makePublisherPresentable("Incredible Publication")).toEqual(
@@ -37,27 +38,18 @@ test("long descriptions get clipped", () => {
   ).toEqual("A pretty darn long example...");
 });
 
-// hand typed functions since babel beat me down
-function makePublisherPresentable(publisher) {
-  return publisher
-    ? `Published by ${publisher}`
-    : "Publication info unavailable";
-}
+test("authors look right when there's ony one", () => {
+  expect(makeEnglishLanguageList(["Ainsley"])).toEqual("By Ainsley");
+});
 
-function clipLongDescriptionText(wordCount, descriptionText) {
-  return descriptionText.split(" ").length > wordCount
-    ? descriptionText
-        .split(" ")
-        .slice(0, wordCount)
-        .join(" ") + "..."
-    : descriptionText;
-}
+test("authors look right when there are two", () => {
+  expect(makeEnglishLanguageList(["Ainsley", "The GZA"])).toEqual(
+    "By Ainsley and The GZA",
+  );
+});
 
-// `makeAuthorsPresentable` excluded because it returns JSX and babel hates that.
-
-// test("authors look right when there's ony one", () => {
-//   expect(makeAuthorsPresentable(["Ainsley"])).toEqual([
-//     "By ",
-//     <span>Ainsley</span>,
-//   ]);
-// });
+test("authors look right when there more than two", () => {
+  expect(
+    makeEnglishLanguageList(["Ainsley", "The GZA", "Alphonse Elric"]),
+  ).toEqual("By Ainsley, The GZA, and Alphonse Elric");
+});

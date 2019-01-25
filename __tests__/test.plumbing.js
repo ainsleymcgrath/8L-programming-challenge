@@ -1,25 +1,33 @@
-const parseRawApiResponse = require("../plumbing");
+const parseBooksApiResponse = require("../plumbing");
 
 test("API parser gets every record", () => {
-  expect(parseRawApiResponse(TERRIBLE_MOCK)).toHaveLength(10);
+  expect(parseBooksApiResponse(TERRIBLE_MOCK)).toHaveLength(10);
 });
 
 test("items in the result have the data from the requirements", () => {
   expect(
-    parseRawApiResponse(TERRIBLE_MOCK).every(
+    parseBooksApiResponse(TERRIBLE_MOCK).every(
       obj =>
-        Object.keys(obj) ===
+        Object.keys(obj)
+          .sort()
+          .join() ===
         [
+          "id",
           "authors",
           "title",
           "publisher",
-          "publishDate",
           "description",
           "imageLinks",
-          "infoLink"
+          "infoLink",
         ]
-    )
-  );
+          .sort()
+          .join(),
+    ),
+  ).toBeTruthy();
+});
+
+test("empty list comes back for empty results", () => {
+  expect(parseBooksApiResponse({})).toEqual([]);
 });
 
 const TERRIBLE_MOCK = {
@@ -42,16 +50,16 @@ const TERRIBLE_MOCK = {
         industryIdentifiers: [
           {
             type: "ISBN_13",
-            identifier: "9781439148624"
+            identifier: "9781439148624",
           },
           {
             type: "ISBN_10",
-            identifier: "1439148627"
-          }
+            identifier: "1439148627",
+          },
         ],
         readingModes: {
           text: false,
-          image: false
+          image: false,
         },
         pageCount: 320,
         printType: "BOOK",
@@ -63,13 +71,13 @@ const TERRIBLE_MOCK = {
         contentVersion: "preview-1.0.0",
         panelizationSummary: {
           containsEpubBubbles: false,
-          containsImageBubbles: false
+          containsImageBubbles: false,
         },
         imageLinks: {
           smallThumbnail:
             "http://books.google.com/books/content?id=mbUwNDfOBxQC&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
           thumbnail:
-            "http://books.google.com/books/content?id=mbUwNDfOBxQC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
+            "http://books.google.com/books/content?id=mbUwNDfOBxQC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
         },
         language: "en",
         previewLink:
@@ -77,12 +85,12 @@ const TERRIBLE_MOCK = {
         infoLink:
           "http://books.google.com/books?id=mbUwNDfOBxQC&dq=%3Dmexican+food&hl=&source=gbs_api",
         canonicalVolumeLink:
-          "https://books.google.com/books/about/Taco_USA.html?hl=&id=mbUwNDfOBxQC"
+          "https://books.google.com/books/about/Taco_USA.html?hl=&id=mbUwNDfOBxQC",
       },
       saleInfo: {
         country: "US",
         saleability: "NOT_FOR_SALE",
-        isEbook: false
+        isEbook: false,
       },
       accessInfo: {
         country: "US",
@@ -91,20 +99,20 @@ const TERRIBLE_MOCK = {
         publicDomain: false,
         textToSpeechPermission: "ALLOWED_FOR_ACCESSIBILITY",
         epub: {
-          isAvailable: false
+          isAvailable: false,
         },
         pdf: {
-          isAvailable: false
+          isAvailable: false,
         },
         webReaderLink:
           "http://play.google.com/books/reader?id=mbUwNDfOBxQC&hl=&printsec=frontcover&source=gbs_api",
         accessViewStatus: "SAMPLE",
-        quoteSharingAllowed: false
+        quoteSharingAllowed: false,
       },
       searchInfo: {
         textSnippet:
-          "The award-winning ¡Ask a Mexican! columnist presents a narrative history of the progression of Mexican cuisine in the United States, sharing a century&#39;s worth of whimsical anecdotes and cultural criticism to address questions about ..."
-      }
+          "The award-winning ¡Ask a Mexican! columnist presents a narrative history of the progression of Mexican cuisine in the United States, sharing a century&#39;s worth of whimsical anecdotes and cultural criticism to address questions about ...",
+      },
     },
     {
       kind: "books#volume",
@@ -121,16 +129,16 @@ const TERRIBLE_MOCK = {
         industryIdentifiers: [
           {
             type: "ISBN_13",
-            identifier: "9781444732207"
+            identifier: "9781444732207",
           },
           {
             type: "ISBN_10",
-            identifier: "144473220X"
-          }
+            identifier: "144473220X",
+          },
         ],
         readingModes: {
           text: true,
-          image: false
+          image: false,
         },
         pageCount: 224,
         printType: "BOOK",
@@ -142,13 +150,13 @@ const TERRIBLE_MOCK = {
         contentVersion: "1.3.3.0.preview.2",
         panelizationSummary: {
           containsEpubBubbles: false,
-          containsImageBubbles: false
+          containsImageBubbles: false,
         },
         imageLinks: {
           smallThumbnail:
             "http://books.google.com/books/content?id=xGg4AgAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
           thumbnail:
-            "http://books.google.com/books/content?id=xGg4AgAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
+            "http://books.google.com/books/content?id=xGg4AgAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
         },
         language: "en",
         previewLink:
@@ -156,7 +164,7 @@ const TERRIBLE_MOCK = {
         infoLink:
           "https://play.google.com/store/books/details?id=xGg4AgAAQBAJ&source=gbs_api",
         canonicalVolumeLink:
-          "https://market.android.com/details?id=book-xGg4AgAAQBAJ"
+          "https://market.android.com/details?id=book-xGg4AgAAQBAJ",
       },
       saleInfo: {
         country: "US",
@@ -164,11 +172,11 @@ const TERRIBLE_MOCK = {
         isEbook: true,
         listPrice: {
           amount: 0.99,
-          currencyCode: "USD"
+          currencyCode: "USD",
         },
         retailPrice: {
           amount: 0.99,
-          currencyCode: "USD"
+          currencyCode: "USD",
         },
         buyLink:
           "https://play.google.com/store/books/details?id=xGg4AgAAQBAJ&rdid=book-xGg4AgAAQBAJ&rdot=1&source=gbs_api",
@@ -177,15 +185,15 @@ const TERRIBLE_MOCK = {
             finskyOfferType: 1,
             listPrice: {
               amountInMicros: 990000.0,
-              currencyCode: "USD"
+              currencyCode: "USD",
             },
             retailPrice: {
               amountInMicros: 990000.0,
-              currencyCode: "USD"
+              currencyCode: "USD",
             },
-            giftable: true
-          }
-        ]
+            giftable: true,
+          },
+        ],
       },
       accessInfo: {
         country: "US",
@@ -196,20 +204,20 @@ const TERRIBLE_MOCK = {
         epub: {
           isAvailable: true,
           acsTokenLink:
-            "http://books.google.com/books/download/Mexican_Food_Made_Simple-sample-epub.acsm?id=xGg4AgAAQBAJ&format=epub&output=acs4_fulfillment_token&dl_type=sample&source=gbs_api"
+            "http://books.google.com/books/download/Mexican_Food_Made_Simple-sample-epub.acsm?id=xGg4AgAAQBAJ&format=epub&output=acs4_fulfillment_token&dl_type=sample&source=gbs_api",
         },
         pdf: {
-          isAvailable: false
+          isAvailable: false,
         },
         webReaderLink:
           "http://play.google.com/books/reader?id=xGg4AgAAQBAJ&hl=&printsec=frontcover&source=gbs_api",
         accessViewStatus: "SAMPLE",
-        quoteSharingAllowed: false
+        quoteSharingAllowed: false,
       },
       searchInfo: {
         textSnippet:
-          "The book features vibrant food photography throughout, and step-by-step guides to folding the perfect burrito, eating a taco (no knives and forks allowed), making a sizzling table salsa, and much more."
-      }
+          "The book features vibrant food photography throughout, and step-by-step guides to folding the perfect burrito, eating a taco (no knives and forks allowed), making a sizzling table salsa, and much more.",
+      },
     },
     {
       kind: "books#volume",
@@ -227,16 +235,16 @@ const TERRIBLE_MOCK = {
         industryIdentifiers: [
           {
             type: "ISBN_13",
-            identifier: "9781849753982"
+            identifier: "9781849753982",
           },
           {
             type: "ISBN_10",
-            identifier: "1849753989"
-          }
+            identifier: "1849753989",
+          },
         ],
         readingModes: {
           text: true,
-          image: true
+          image: true,
         },
         pageCount: 144,
         printType: "BOOK",
@@ -246,13 +254,13 @@ const TERRIBLE_MOCK = {
         contentVersion: "1.1.1.0.preview.3",
         panelizationSummary: {
           containsEpubBubbles: false,
-          containsImageBubbles: false
+          containsImageBubbles: false,
         },
         imageLinks: {
           smallThumbnail:
             "http://books.google.com/books/content?id=vZ2sAwAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
           thumbnail:
-            "http://books.google.com/books/content?id=vZ2sAwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
+            "http://books.google.com/books/content?id=vZ2sAwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
         },
         language: "en",
         previewLink:
@@ -260,7 +268,7 @@ const TERRIBLE_MOCK = {
         infoLink:
           "https://play.google.com/store/books/details?id=vZ2sAwAAQBAJ&source=gbs_api",
         canonicalVolumeLink:
-          "https://market.android.com/details?id=book-vZ2sAwAAQBAJ"
+          "https://market.android.com/details?id=book-vZ2sAwAAQBAJ",
       },
       saleInfo: {
         country: "US",
@@ -268,11 +276,11 @@ const TERRIBLE_MOCK = {
         isEbook: true,
         listPrice: {
           amount: 13.99,
-          currencyCode: "USD"
+          currencyCode: "USD",
         },
         retailPrice: {
           amount: 9.99,
-          currencyCode: "USD"
+          currencyCode: "USD",
         },
         buyLink:
           "https://play.google.com/store/books/details?id=vZ2sAwAAQBAJ&rdid=book-vZ2sAwAAQBAJ&rdot=1&source=gbs_api",
@@ -281,15 +289,15 @@ const TERRIBLE_MOCK = {
             finskyOfferType: 1,
             listPrice: {
               amountInMicros: 1.399e7,
-              currencyCode: "USD"
+              currencyCode: "USD",
             },
             retailPrice: {
               amountInMicros: 9990000.0,
-              currencyCode: "USD"
+              currencyCode: "USD",
             },
-            giftable: true
-          }
-        ]
+            giftable: true,
+          },
+        ],
       },
       accessInfo: {
         country: "US",
@@ -300,22 +308,22 @@ const TERRIBLE_MOCK = {
         epub: {
           isAvailable: true,
           acsTokenLink:
-            "http://books.google.com/books/download/Real_Mexican_Food-sample-epub.acsm?id=vZ2sAwAAQBAJ&format=epub&output=acs4_fulfillment_token&dl_type=sample&source=gbs_api"
+            "http://books.google.com/books/download/Real_Mexican_Food-sample-epub.acsm?id=vZ2sAwAAQBAJ&format=epub&output=acs4_fulfillment_token&dl_type=sample&source=gbs_api",
         },
         pdf: {
           isAvailable: true,
           acsTokenLink:
-            "http://books.google.com/books/download/Real_Mexican_Food-sample-pdf.acsm?id=vZ2sAwAAQBAJ&format=pdf&output=acs4_fulfillment_token&dl_type=sample&source=gbs_api"
+            "http://books.google.com/books/download/Real_Mexican_Food-sample-pdf.acsm?id=vZ2sAwAAQBAJ&format=pdf&output=acs4_fulfillment_token&dl_type=sample&source=gbs_api",
         },
         webReaderLink:
           "http://play.google.com/books/reader?id=vZ2sAwAAQBAJ&hl=&printsec=frontcover&source=gbs_api",
         accessViewStatus: "SAMPLE",
-        quoteSharingAllowed: false
+        quoteSharingAllowed: false,
       },
       searchInfo: {
         textSnippet:
-          "Felipe Fuentes Cruz was born in Puebla, Mexico and has worked in the US, Spain and now London. While working in a Mexican restaurant in 2006, he met Ben Fordham , who had fallen in love with real Mexican food when he lived in Texas."
-      }
+          "Felipe Fuentes Cruz was born in Puebla, Mexico and has worked in the US, Spain and now London. While working in a Mexican restaurant in 2006, he met Ben Fordham , who had fallen in love with real Mexican food when he lived in Texas.",
+      },
     },
     {
       kind: "books#volume",
@@ -333,16 +341,16 @@ const TERRIBLE_MOCK = {
         industryIdentifiers: [
           {
             type: "ISBN_13",
-            identifier: "9780190655778"
+            identifier: "9780190655778",
           },
           {
             type: "ISBN_10",
-            identifier: "0190655771"
-          }
+            identifier: "0190655771",
+          },
         ],
         readingModes: {
           text: false,
-          image: true
+          image: true,
         },
         pageCount: 320,
         printType: "BOOK",
@@ -353,13 +361,13 @@ const TERRIBLE_MOCK = {
         contentVersion: "preview-1.0.0",
         panelizationSummary: {
           containsEpubBubbles: false,
-          containsImageBubbles: false
+          containsImageBubbles: false,
         },
         imageLinks: {
           smallThumbnail:
             "http://books.google.com/books/content?id=lVT5DAAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
           thumbnail:
-            "http://books.google.com/books/content?id=lVT5DAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
+            "http://books.google.com/books/content?id=lVT5DAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
         },
         language: "en",
         previewLink:
@@ -367,12 +375,12 @@ const TERRIBLE_MOCK = {
         infoLink:
           "http://books.google.com/books?id=lVT5DAAAQBAJ&dq=%3Dmexican+food&hl=&source=gbs_api",
         canonicalVolumeLink:
-          "https://books.google.com/books/about/Planet_Taco.html?hl=&id=lVT5DAAAQBAJ"
+          "https://books.google.com/books/about/Planet_Taco.html?hl=&id=lVT5DAAAQBAJ",
       },
       saleInfo: {
         country: "US",
         saleability: "NOT_FOR_SALE",
-        isEbook: false
+        isEbook: false,
       },
       accessInfo: {
         country: "US",
@@ -381,20 +389,20 @@ const TERRIBLE_MOCK = {
         publicDomain: false,
         textToSpeechPermission: "ALLOWED",
         epub: {
-          isAvailable: false
+          isAvailable: false,
         },
         pdf: {
-          isAvailable: false
+          isAvailable: false,
         },
         webReaderLink:
           "http://play.google.com/books/reader?id=lVT5DAAAQBAJ&hl=&printsec=frontcover&source=gbs_api",
         accessViewStatus: "SAMPLE",
-        quoteSharingAllowed: false
+        quoteSharingAllowed: false,
       },
       searchInfo: {
         textSnippet:
-          "&quot;In Planet Taco, Jeffrey Pilcher traces the historical origins and evolution of Mexico&#39;s national cuisine, explores its incarnation as a Mexican American fast-food, shows how surfers became global pioneers of Mexican food, and how Corona ..."
-      }
+          "&quot;In Planet Taco, Jeffrey Pilcher traces the historical origins and evolution of Mexico&#39;s national cuisine, explores its incarnation as a Mexican American fast-food, shows how surfers became global pioneers of Mexican food, and how Corona ...",
+      },
     },
     {
       kind: "books#volume",
@@ -411,12 +419,12 @@ const TERRIBLE_MOCK = {
         industryIdentifiers: [
           {
             type: "OTHER",
-            identifier: "UTEXAS:059173006174825"
-          }
+            identifier: "UTEXAS:059173006174825",
+          },
         ],
         readingModes: {
           text: false,
-          image: false
+          image: false,
         },
         pageCount: 270,
         printType: "BOOK",
@@ -430,7 +438,7 @@ const TERRIBLE_MOCK = {
           smallThumbnail:
             "http://books.google.com/books/content?id=ki5gAAAAMAAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api",
           thumbnail:
-            "http://books.google.com/books/content?id=ki5gAAAAMAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
+            "http://books.google.com/books/content?id=ki5gAAAAMAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
         },
         language: "en",
         previewLink:
@@ -438,12 +446,12 @@ const TERRIBLE_MOCK = {
         infoLink:
           "http://books.google.com/books?id=ki5gAAAAMAAJ&dq=%3Dmexican+food&hl=&source=gbs_api",
         canonicalVolumeLink:
-          "https://books.google.com/books/about/Real_Mexican_Food_for_People_with_Diabet.html?hl=&id=ki5gAAAAMAAJ"
+          "https://books.google.com/books/about/Real_Mexican_Food_for_People_with_Diabet.html?hl=&id=ki5gAAAAMAAJ",
       },
       saleInfo: {
         country: "US",
         saleability: "NOT_FOR_SALE",
-        isEbook: false
+        isEbook: false,
       },
       accessInfo: {
         country: "US",
@@ -452,20 +460,20 @@ const TERRIBLE_MOCK = {
         publicDomain: false,
         textToSpeechPermission: "ALLOWED",
         epub: {
-          isAvailable: false
+          isAvailable: false,
         },
         pdf: {
-          isAvailable: false
+          isAvailable: false,
         },
         webReaderLink:
           "http://play.google.com/books/reader?id=ki5gAAAAMAAJ&hl=&printsec=frontcover&source=gbs_api",
         accessViewStatus: "NONE",
-        quoteSharingAllowed: false
+        quoteSharingAllowed: false,
       },
       searchInfo: {
         textSnippet:
-          "Gathers low-fat, low-calorie recipes for enchildas, tamales, burritos, nachos, quesadillas, fajitas, and salads healthful. Now, you too can savor enchiladas, tamales, and burritos filled with cheese, sour cream, refrie"
-      }
+          "Gathers low-fat, low-calorie recipes for enchildas, tamales, burritos, nachos, quesadillas, fajitas, and salads healthful. Now, you too can savor enchiladas, tamales, and burritos filled with cheese, sour cream, refrie",
+      },
     },
     {
       kind: "books#volume",
@@ -481,16 +489,16 @@ const TERRIBLE_MOCK = {
         industryIdentifiers: [
           {
             type: "ISBN_10",
-            identifier: "1641363800"
+            identifier: "1641363800",
           },
           {
             type: "ISBN_13",
-            identifier: "9781641363808"
-          }
+            identifier: "9781641363808",
+          },
         ],
         readingModes: {
           text: false,
-          image: false
+          image: false,
         },
         pageCount: 372,
         printType: "BOOK",
@@ -500,7 +508,7 @@ const TERRIBLE_MOCK = {
         contentVersion: "preview-1.0.0",
         panelizationSummary: {
           containsEpubBubbles: false,
-          containsImageBubbles: false
+          containsImageBubbles: false,
         },
         language: "en",
         previewLink:
@@ -508,12 +516,12 @@ const TERRIBLE_MOCK = {
         infoLink:
           "http://books.google.com/books?id=s31wswEACAAJ&dq=%3Dmexican+food&hl=&source=gbs_api",
         canonicalVolumeLink:
-          "https://books.google.com/books/about/The_Mexican_Food_Diet_Healthy_Eating_Tha.html?hl=&id=s31wswEACAAJ"
+          "https://books.google.com/books/about/The_Mexican_Food_Diet_Healthy_Eating_Tha.html?hl=&id=s31wswEACAAJ",
       },
       saleInfo: {
         country: "US",
         saleability: "NOT_FOR_SALE",
-        isEbook: false
+        isEbook: false,
       },
       accessInfo: {
         country: "US",
@@ -522,20 +530,20 @@ const TERRIBLE_MOCK = {
         publicDomain: false,
         textToSpeechPermission: "ALLOWED",
         epub: {
-          isAvailable: false
+          isAvailable: false,
         },
         pdf: {
-          isAvailable: false
+          isAvailable: false,
         },
         webReaderLink:
           "http://play.google.com/books/reader?id=s31wswEACAAJ&hl=&printsec=frontcover&source=gbs_api",
         accessViewStatus: "NONE",
-        quoteSharingAllowed: false
+        quoteSharingAllowed: false,
       },
       searchInfo: {
         textSnippet:
-          "The diet in this book, if followed correctly, can allow readers to lose up to 7 pounds in 1 week, while reducing cravings, toxicity and inflammation; reducing bloating and improving digestion; getting more energy; feeling calmer and happier ..."
-      }
+          "The diet in this book, if followed correctly, can allow readers to lose up to 7 pounds in 1 week, while reducing cravings, toxicity and inflammation; reducing bloating and improving digestion; getting more energy; feeling calmer and happier ...",
+      },
     },
     {
       kind: "books#volume",
@@ -549,7 +557,7 @@ const TERRIBLE_MOCK = {
           "Devon Peña",
           "Luz Calvo",
           "Pancho McFarland",
-          "Gabriel R. Valle"
+          "Gabriel R. Valle",
         ],
         publisher: "University of Arkansas Press",
         publishedDate: "2017-09-01",
@@ -558,16 +566,16 @@ const TERRIBLE_MOCK = {
         industryIdentifiers: [
           {
             type: "ISBN_13",
-            identifier: "9781610756181"
+            identifier: "9781610756181",
           },
           {
             type: "ISBN_10",
-            identifier: "1610756185"
-          }
+            identifier: "1610756185",
+          },
         ],
         readingModes: {
           text: true,
-          image: true
+          image: true,
         },
         pageCount: 503,
         printType: "BOOK",
@@ -577,13 +585,13 @@ const TERRIBLE_MOCK = {
         contentVersion: "preview-1.0.0",
         panelizationSummary: {
           containsEpubBubbles: false,
-          containsImageBubbles: false
+          containsImageBubbles: false,
         },
         imageLinks: {
           smallThumbnail:
             "http://books.google.com/books/content?id=tVMzDwAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
           thumbnail:
-            "http://books.google.com/books/content?id=tVMzDwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
+            "http://books.google.com/books/content?id=tVMzDwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
         },
         language: "en",
         previewLink:
@@ -591,7 +599,7 @@ const TERRIBLE_MOCK = {
         infoLink:
           "https://play.google.com/store/books/details?id=tVMzDwAAQBAJ&source=gbs_api",
         canonicalVolumeLink:
-          "https://market.android.com/details?id=book-tVMzDwAAQBAJ"
+          "https://market.android.com/details?id=book-tVMzDwAAQBAJ",
       },
       saleInfo: {
         country: "US",
@@ -599,11 +607,11 @@ const TERRIBLE_MOCK = {
         isEbook: true,
         listPrice: {
           amount: 27.95,
-          currencyCode: "USD"
+          currencyCode: "USD",
         },
         retailPrice: {
           amount: 15.37,
-          currencyCode: "USD"
+          currencyCode: "USD",
         },
         buyLink:
           "https://play.google.com/store/books/details?id=tVMzDwAAQBAJ&rdid=book-tVMzDwAAQBAJ&rdot=1&source=gbs_api",
@@ -612,15 +620,15 @@ const TERRIBLE_MOCK = {
             finskyOfferType: 1,
             listPrice: {
               amountInMicros: 2.795e7,
-              currencyCode: "USD"
+              currencyCode: "USD",
             },
             retailPrice: {
               amountInMicros: 1.537e7,
-              currencyCode: "USD"
+              currencyCode: "USD",
             },
-            giftable: true
-          }
-        ]
+            giftable: true,
+          },
+        ],
       },
       accessInfo: {
         country: "US",
@@ -631,22 +639,22 @@ const TERRIBLE_MOCK = {
         epub: {
           isAvailable: true,
           acsTokenLink:
-            "http://books.google.com/books/download/Mexican_Origin_Foods_Foodways_and_Social-sample-epub.acsm?id=tVMzDwAAQBAJ&format=epub&output=acs4_fulfillment_token&dl_type=sample&source=gbs_api"
+            "http://books.google.com/books/download/Mexican_Origin_Foods_Foodways_and_Social-sample-epub.acsm?id=tVMzDwAAQBAJ&format=epub&output=acs4_fulfillment_token&dl_type=sample&source=gbs_api",
         },
         pdf: {
           isAvailable: true,
           acsTokenLink:
-            "http://books.google.com/books/download/Mexican_Origin_Foods_Foodways_and_Social-sample-pdf.acsm?id=tVMzDwAAQBAJ&format=pdf&output=acs4_fulfillment_token&dl_type=sample&source=gbs_api"
+            "http://books.google.com/books/download/Mexican_Origin_Foods_Foodways_and_Social-sample-pdf.acsm?id=tVMzDwAAQBAJ&format=pdf&output=acs4_fulfillment_token&dl_type=sample&source=gbs_api",
         },
         webReaderLink:
           "http://play.google.com/books/reader?id=tVMzDwAAQBAJ&hl=&printsec=frontcover&source=gbs_api",
         accessViewStatus: "SAMPLE",
-        quoteSharingAllowed: false
+        quoteSharingAllowed: false,
       },
       searchInfo: {
         textSnippet:
-          "Winner, 2018 ASFS (Association for the Study of Food and Society) Book Award, Edited Volume This collection of new essays offers groundbreaking perspectives on the ways that food and foodways serve as an element of decolonization in Mexican ..."
-      }
+          "Winner, 2018 ASFS (Association for the Study of Food and Society) Book Award, Edited Volume This collection of new essays offers groundbreaking perspectives on the ways that food and foodways serve as an element of decolonization in Mexican ...",
+      },
     },
     {
       kind: "books#volume",
@@ -664,16 +672,16 @@ const TERRIBLE_MOCK = {
         industryIdentifiers: [
           {
             type: "ISBN_13",
-            identifier: "9780520965447"
+            identifier: "9780520965447",
           },
           {
             type: "ISBN_10",
-            identifier: "0520965442"
-          }
+            identifier: "0520965442",
+          },
         ],
         readingModes: {
           text: true,
-          image: true
+          image: true,
         },
         pageCount: 288,
         printType: "BOOK",
@@ -683,13 +691,13 @@ const TERRIBLE_MOCK = {
         contentVersion: "0.1.1.0.preview.3",
         panelizationSummary: {
           containsEpubBubbles: false,
-          containsImageBubbles: false
+          containsImageBubbles: false,
         },
         imageLinks: {
           smallThumbnail:
             "http://books.google.com/books/content?id=enVmDwAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
           thumbnail:
-            "http://books.google.com/books/content?id=enVmDwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
+            "http://books.google.com/books/content?id=enVmDwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
         },
         language: "en",
         previewLink:
@@ -697,7 +705,7 @@ const TERRIBLE_MOCK = {
         infoLink:
           "https://play.google.com/store/books/details?id=enVmDwAAQBAJ&source=gbs_api",
         canonicalVolumeLink:
-          "https://market.android.com/details?id=book-enVmDwAAQBAJ"
+          "https://market.android.com/details?id=book-enVmDwAAQBAJ",
       },
       saleInfo: {
         country: "US",
@@ -705,11 +713,11 @@ const TERRIBLE_MOCK = {
         isEbook: true,
         listPrice: {
           amount: 29.95,
-          currencyCode: "USD"
+          currencyCode: "USD",
         },
         retailPrice: {
           amount: 18.6,
-          currencyCode: "USD"
+          currencyCode: "USD",
         },
         buyLink:
           "https://play.google.com/store/books/details?id=enVmDwAAQBAJ&rdid=book-enVmDwAAQBAJ&rdot=1&source=gbs_api",
@@ -718,15 +726,15 @@ const TERRIBLE_MOCK = {
             finskyOfferType: 1,
             listPrice: {
               amountInMicros: 2.995e7,
-              currencyCode: "USD"
+              currencyCode: "USD",
             },
             retailPrice: {
               amountInMicros: 1.86e7,
-              currencyCode: "USD"
+              currencyCode: "USD",
             },
-            giftable: true
-          }
-        ]
+            giftable: true,
+          },
+        ],
       },
       accessInfo: {
         country: "US",
@@ -737,22 +745,22 @@ const TERRIBLE_MOCK = {
         epub: {
           isAvailable: true,
           acsTokenLink:
-            "http://books.google.com/books/download/Eating_NAFTA-sample-epub.acsm?id=enVmDwAAQBAJ&format=epub&output=acs4_fulfillment_token&dl_type=sample&source=gbs_api"
+            "http://books.google.com/books/download/Eating_NAFTA-sample-epub.acsm?id=enVmDwAAQBAJ&format=epub&output=acs4_fulfillment_token&dl_type=sample&source=gbs_api",
         },
         pdf: {
           isAvailable: true,
           acsTokenLink:
-            "http://books.google.com/books/download/Eating_NAFTA-sample-pdf.acsm?id=enVmDwAAQBAJ&format=pdf&output=acs4_fulfillment_token&dl_type=sample&source=gbs_api"
+            "http://books.google.com/books/download/Eating_NAFTA-sample-pdf.acsm?id=enVmDwAAQBAJ&format=pdf&output=acs4_fulfillment_token&dl_type=sample&source=gbs_api",
         },
         webReaderLink:
           "http://play.google.com/books/reader?id=enVmDwAAQBAJ&hl=&printsec=frontcover&source=gbs_api",
         accessViewStatus: "SAMPLE",
-        quoteSharingAllowed: false
+        quoteSharingAllowed: false,
       },
       searchInfo: {
         textSnippet:
-          "In her gripping new book, Alyshia Gálvez exposes how changes in policy following NAFTA have fundamentally altered one of the most basic elements of life in Mexico—sustenance."
-      }
+          "In her gripping new book, Alyshia Gálvez exposes how changes in policy following NAFTA have fundamentally altered one of the most basic elements of life in Mexico—sustenance.",
+      },
     },
     {
       kind: "books#volume",
@@ -769,16 +777,16 @@ const TERRIBLE_MOCK = {
         industryIdentifiers: [
           {
             type: "ISBN_13",
-            identifier: "9780826351036"
+            identifier: "9780826351036",
           },
           {
             type: "ISBN_10",
-            identifier: "0826351034"
-          }
+            identifier: "0826351034",
+          },
         ],
         readingModes: {
           text: true,
-          image: true
+          image: true,
         },
         pageCount: 128,
         printType: "BOOK",
@@ -790,7 +798,7 @@ const TERRIBLE_MOCK = {
           smallThumbnail:
             "http://books.google.com/books/content?id=eE2Uo5aexE4C&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
           thumbnail:
-            "http://books.google.com/books/content?id=eE2Uo5aexE4C&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
+            "http://books.google.com/books/content?id=eE2Uo5aexE4C&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
         },
         language: "en",
         previewLink:
@@ -798,7 +806,7 @@ const TERRIBLE_MOCK = {
         infoLink:
           "https://play.google.com/store/books/details?id=eE2Uo5aexE4C&source=gbs_api",
         canonicalVolumeLink:
-          "https://market.android.com/details?id=book-eE2Uo5aexE4C"
+          "https://market.android.com/details?id=book-eE2Uo5aexE4C",
       },
       saleInfo: {
         country: "US",
@@ -806,11 +814,11 @@ const TERRIBLE_MOCK = {
         isEbook: true,
         listPrice: {
           amount: 9.99,
-          currencyCode: "USD"
+          currencyCode: "USD",
         },
         retailPrice: {
           amount: 7.99,
-          currencyCode: "USD"
+          currencyCode: "USD",
         },
         buyLink:
           "https://play.google.com/store/books/details?id=eE2Uo5aexE4C&rdid=book-eE2Uo5aexE4C&rdot=1&source=gbs_api",
@@ -819,15 +827,15 @@ const TERRIBLE_MOCK = {
             finskyOfferType: 1,
             listPrice: {
               amountInMicros: 9990000.0,
-              currencyCode: "USD"
+              currencyCode: "USD",
             },
             retailPrice: {
               amountInMicros: 7990000.0,
-              currencyCode: "USD"
+              currencyCode: "USD",
             },
-            giftable: true
-          }
-        ]
+            giftable: true,
+          },
+        ],
       },
       accessInfo: {
         country: "US",
@@ -838,22 +846,22 @@ const TERRIBLE_MOCK = {
         epub: {
           isAvailable: true,
           acsTokenLink:
-            "http://books.google.com/books/download/Mexican_Cookbook-sample-epub.acsm?id=eE2Uo5aexE4C&format=epub&output=acs4_fulfillment_token&dl_type=sample&source=gbs_api"
+            "http://books.google.com/books/download/Mexican_Cookbook-sample-epub.acsm?id=eE2Uo5aexE4C&format=epub&output=acs4_fulfillment_token&dl_type=sample&source=gbs_api",
         },
         pdf: {
           isAvailable: true,
           acsTokenLink:
-            "http://books.google.com/books/download/Mexican_Cookbook-sample-pdf.acsm?id=eE2Uo5aexE4C&format=pdf&output=acs4_fulfillment_token&dl_type=sample&source=gbs_api"
+            "http://books.google.com/books/download/Mexican_Cookbook-sample-pdf.acsm?id=eE2Uo5aexE4C&format=pdf&output=acs4_fulfillment_token&dl_type=sample&source=gbs_api",
         },
         webReaderLink:
           "http://play.google.com/books/reader?id=eE2Uo5aexE4C&hl=&printsec=frontcover&source=gbs_api",
         accessViewStatus: "SAMPLE",
-        quoteSharingAllowed: false
+        quoteSharingAllowed: false,
       },
       searchInfo: {
         textSnippet:
-          "When it was first published in 1934, Erna Fergusson&#39;s Mexican Cookbook made authentic Mexican recipes accessible to cooks nationwide--including celebrated favorites such as enchiladas, chile rellenos, and carne adovada, as well as the ..."
-      }
+          "When it was first published in 1934, Erna Fergusson&#39;s Mexican Cookbook made authentic Mexican recipes accessible to cooks nationwide--including celebrated favorites such as enchiladas, chile rellenos, and carne adovada, as well as the ...",
+      },
     },
     {
       kind: "books#volume",
@@ -870,16 +878,16 @@ const TERRIBLE_MOCK = {
         industryIdentifiers: [
           {
             type: "ISBN_10",
-            identifier: "1628320982"
+            identifier: "1628320982",
           },
           {
             type: "ISBN_13",
-            identifier: "9781628320985"
-          }
+            identifier: "9781628320985",
+          },
         ],
         readingModes: {
           text: false,
-          image: false
+          image: false,
         },
         pageCount: 24,
         printType: "BOOK",
@@ -891,7 +899,7 @@ const TERRIBLE_MOCK = {
           smallThumbnail:
             "http://books.google.com/books/content?id=4yLzrQEACAAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api",
           thumbnail:
-            "http://books.google.com/books/content?id=4yLzrQEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
+            "http://books.google.com/books/content?id=4yLzrQEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
         },
         language: "en",
         previewLink:
@@ -899,12 +907,12 @@ const TERRIBLE_MOCK = {
         infoLink:
           "http://books.google.com/books?id=4yLzrQEACAAJ&dq=%3Dmexican+food&hl=&source=gbs_api",
         canonicalVolumeLink:
-          "https://books.google.com/books/about/Cooking_School_Mexican_Food.html?hl=&id=4yLzrQEACAAJ"
+          "https://books.google.com/books/about/Cooking_School_Mexican_Food.html?hl=&id=4yLzrQEACAAJ",
       },
       saleInfo: {
         country: "US",
         saleability: "NOT_FOR_SALE",
-        isEbook: false
+        isEbook: false,
       },
       accessInfo: {
         country: "US",
@@ -913,20 +921,20 @@ const TERRIBLE_MOCK = {
         publicDomain: false,
         textToSpeechPermission: "ALLOWED",
         epub: {
-          isAvailable: false
+          isAvailable: false,
         },
         pdf: {
-          isAvailable: false
+          isAvailable: false,
         },
         webReaderLink:
           "http://play.google.com/books/reader?id=4yLzrQEACAAJ&hl=&printsec=frontcover&source=gbs_api",
         accessViewStatus: "NONE",
-        quoteSharingAllowed: false
+        quoteSharingAllowed: false,
       },
       searchInfo: {
         textSnippet:
-          "An elementary introduction to the relationship between cooking and Mexican culture, the effect of local agriculture on the diets of different regions, common tools such as rolling pins, and recipe instructions."
-      }
-    }
-  ]
+          "An elementary introduction to the relationship between cooking and Mexican culture, the effect of local agriculture on the diets of different regions, common tools such as rolling pins, and recipe instructions.",
+      },
+    },
+  ],
 };
