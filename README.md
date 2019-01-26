@@ -1,6 +1,7 @@
 # 8th Light Programming Challenge
 
 This repository contains my solution to the programming compoment of the 8th Light prescreen assessment. 
+Find it in the wild [here](https://ainsley-8l-books.herokuapp.com/).
 
 ## Ingredients
 
