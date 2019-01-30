@@ -14,8 +14,7 @@ const MAX_WORD_COUNT = 45;
  **/
 export default function SearchResult(props) {
   return (
-    <div className="column is-full container">
-      <br />
+    <li className="column is-full container">
       <article className="media">
         <figure className="media-left">
           <p className="image">
@@ -56,6 +55,6 @@ export default function SearchResult(props) {
           </div>
         </div>
       </article>
-    </div>
+    </li>
   );
 }

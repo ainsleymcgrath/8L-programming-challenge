@@ -1,12 +1,12 @@
 const parseBooksApiResponse = require("../plumbing");
 
 test("API parser gets every record", () => {
-  expect(parseBooksApiResponse(TERRIBLE_MOCK)).toHaveLength(10);
+  expect(parseBooksApiResponse(BOOKS_API_JSON_MOCK)).toHaveLength(10);
 });
 
 test("items in the result have the data from the requirements", () => {
   expect(
-    parseBooksApiResponse(TERRIBLE_MOCK).every(
+    parseBooksApiResponse(BOOKS_API_JSON_MOCK).every(
       obj =>
         Object.keys(obj)
           .sort()
@@ -30,7 +30,7 @@ test("empty list comes back for empty results", () => {
   expect(parseBooksApiResponse({})).toEqual([]);
 });
 
-const TERRIBLE_MOCK = {
+const BOOKS_API_JSON_MOCK = {
   kind: "books#volumes",
   totalItems: 2004,
   items: [

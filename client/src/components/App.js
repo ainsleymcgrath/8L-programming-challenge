@@ -13,7 +13,7 @@ export default class App extends React.Component {
       searchQuery: "",
       searchResults: [],
       searchResultsAreLoading: false,
-      noBooks: false,
+      emptyBooksApiResponse: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -34,19 +34,21 @@ export default class App extends React.Component {
     if (e.type === "click" || (e.type === "keyup" && e.keyCode === 13)) {
       this.setState({ searchResultsAreLoading: true });
 
-      const url = `${window.location.href}search?q=${this.state.searchQuery}`;
+      const userSearchUrl = `${window.location.href}search?q=${
+        this.state.searchQuery
+      }`;
       const options = {
         method: "GET",
         headers: { "Content-Type": "application/json; charset=utf-8" },
       };
 
-      fetch(url, options)
+      fetch(userSearchUrl, options)
         .then(res => res.json())
         .then(({ resultList }) =>
           this.setState({
             searchResults: resultList,
             searchResultsAreLoading: false,
-            noBooks: resultList.length === 0,
+            emptyBooksApiResponse: resultList.length === 0,
           }),
         );
     }
@@ -71,7 +73,7 @@ export default class App extends React.Component {
         {!this.state.searchResultsAreLoading && (
           <SearchResultList
             resultList={this.state.searchResults}
-            noBooks={this.state.noBooks}
+            emptyBooksApiResponse={this.state.emptyBooksApiResponse}
           />
         )}
       </div>
