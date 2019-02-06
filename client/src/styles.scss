@@ -16,4 +16,8 @@ div.image {
   justify-content: center;
 }
 
+input#page-length-control {
+  width: 3rem;
+}
+
 @import "../../node_modules/bulma/bulma.sass";

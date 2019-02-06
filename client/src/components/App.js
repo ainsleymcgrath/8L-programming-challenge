@@ -14,6 +14,7 @@ export default class App extends React.Component {
       searchResults: [],
       searchResultsAreLoading: false,
       emptyBooksApiResponse: false,
+      resultsShownOnPage: 10,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -23,6 +24,10 @@ export default class App extends React.Component {
   handleChange(e) {
     e.preventDefault();
 
+    if (name == "resultsShownOnPage" && (value > 40 || value < 10)) {
+      alert("Results shown per query must be between 10 and 40");
+    }
+
     const { value, name } = e.target;
 
     this.setState({ [name]: value });
@@ -31,12 +36,20 @@ export default class App extends React.Component {
   handleSearch(e) {
     e.preventDefault();
 
+    if (
+      this.state.resultsShownOnPage > 40 ||
+      this.state.resultsShownOnPage < 10
+    ) {
+      alert("Searches can only return between 10 and 40 results.");
+      return;
+    }
+
     if (e.type === "click" || (e.type === "keyup" && e.keyCode === 13)) {
       this.setState({ searchResultsAreLoading: true });
 
       const userSearchUrl = `${window.location.href}search?q=${
         this.state.searchQuery
-      }`;
+      }&len=${this.state.resultsShownOnPage}`;
       const options = {
         method: "GET",
         headers: { "Content-Type": "application/json; charset=utf-8" },
@@ -63,6 +76,7 @@ export default class App extends React.Component {
             onChange={this.handleChange}
             onSearch={this.handleSearch}
             value={this.state.searchQuery}
+            resultsShownOnPage={this.state.resultsShownOnPage}
           />
         </div>
         {this.state.searchResultsAreLoading && (

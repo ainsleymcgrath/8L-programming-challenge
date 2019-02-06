@@ -26,7 +26,7 @@ app.get("/search", (req, res) => {
 
   const googleBooksUrl = `${process.env.URL}?key=${process.env.API_KEY}&q=${
     req.query.q
-  }`;
+  }&startIndex=0&maxResults=${req.query.len}`;
 
   fetch(googleBooksUrl, options)
     .then(res =>
