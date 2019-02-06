@@ -9,4 +9,11 @@ $break-width: 700px;
   }
 }
 
+div.image {
+  width: 128px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 @import "../../node_modules/bulma/bulma.sass";

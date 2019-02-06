@@ -20,6 +20,10 @@ function clipLongDescriptionText(wordCount, descriptionText) {
     : descriptionText;
 }
 
+function secureImgLinks(imgLink) {
+  return imgLink.replace(/http(?!s)/gi, "https");
+}
+
 test("info is presented when it exists", () => {
   expect(makePublisherPresentable("Incredible Publication")).toEqual(
     "Published by Incredible Publication",
@@ -52,4 +56,10 @@ test("authors look right when there more than two", () => {
   expect(
     makeEnglishLanguageList(["Ainsley", "The GZA", "Alphonse Elric"]),
   ).toEqual("By Ainsley, The GZA, and Alphonse Elric");
+});
+
+test("insecure image links are made secure", () => {
+  expect(secureImgLinks("http://image.is.not.secure")).toEqual(
+    "https://image.is.not.secure",
+  );
 });

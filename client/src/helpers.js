@@ -25,3 +25,8 @@ export function clipLongDescriptionText(wordCount, descriptionText) {
         .join(" ") + "..."
     : descriptionText;
 }
+
+//** replace `http` with `https` for <img src=""> */
+export function secureImgLinks(imgLink) {
+  return imgLink.replace(/http(?!s)/gi, "https");
+}

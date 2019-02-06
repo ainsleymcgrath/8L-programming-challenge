@@ -3,6 +3,7 @@ import {
   makeEnglishLanguageList,
   makePublisherPresentable,
   clipLongDescriptionText,
+  secureImgLinks,
 } from "../helpers";
 
 const MAX_WORD_COUNT = 45;
@@ -17,16 +18,16 @@ export default function SearchResult(props) {
     <li className="column is-full container">
       <article className="media">
         <figure className="media-left">
-          <p className="image">
+          <div className="image">
             {props.data.imageLinks ? (
               <img
-                src={props.data.imageLinks.smallThumbnail}
+                src={secureImgLinks(props.data.imageLinks.smallThumbnail)}
                 alt={`${props.data.title} cover image.`}
               />
             ) : (
               <div className="container">No image found</div>
             )}
-          </p>
+          </div>
         </figure>
         <div className="media-content">
           <div className="content">
