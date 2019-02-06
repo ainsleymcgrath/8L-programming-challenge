@@ -1,4 +1,4 @@
-const parseBooksApiResponse = require("../plumbing");
+const parseBooksApiResponse = require("../parsers");
 
 test("API parser gets every record", () => {
   expect(parseBooksApiResponse(BOOKS_API_JSON_MOCK)).toHaveLength(10);
