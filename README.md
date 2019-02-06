@@ -29,23 +29,21 @@ First, install dependencies.
 npm install
 ```
 
-Next, build the frontend.
+Now, you'll need to create a `.env` for local server configuration. **Note:** a [Google Books API key](https://developers.google.com/books/docs/v1/getting_started) is required to do this.
 
-```bash
-npm run start-client
+```
+URL=https://www.googleapis.com/books/v1/volumes
+API_KEY=<YOUR_VERY_OWN_API_KEY>
+PORT=<YOUR_FAVORITE_PORT>
 ```
 
-Open another terminal and run the server.
+With these environment variables set, simply run the following.
 
 ```bash
-npm run start-server
+npm run start-all
 ```
 
-Now run tests, if you'd like. (In a third and final terminal)
-
-```bash
-npm run test
-```
+This will run and watch all tests, watch and build frontend assets, and serve them.
 
 ## Reflections
 
